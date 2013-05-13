@@ -25,6 +25,13 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+///* bootloader command is this block */
+//#ifdef  DEVICE_IS_K860
+//static int RECOVERY_FLAG_BLOCK = 1060;
+//#else
+//static int RECOVERY_FLAG_BLOCK = 0;
+//#endif
+
 static int get_bootloader_message_mtd(struct bootloader_message *out, const Volume* v);
 static int set_bootloader_message_mtd(const struct bootloader_message *in, const Volume* v);
 static int get_bootloader_message_block(struct bootloader_message *out, const Volume* v);
@@ -168,6 +175,10 @@ static int get_bootloader_message_block(struct bootloader_message *out,
         return -1;
     }
     struct bootloader_message temp;
+	if (fseek(f, RECOVERY_FLAG_BLOCK * 512, 0)) {
+		LOGE("Failed seek %s\n(%s)\n",v->device, strerror(errno));
+		return -1;
+	}
     int count = fread(&temp, sizeof(temp), 1, f);
     if (count != 1) {
         LOGE("Failed reading %s\n(%s)\n", v->device, strerror(errno));
@@ -189,6 +200,10 @@ static int set_bootloader_message_block(const struct bootloader_message *in,
         LOGE("Can't open %s\n(%s)\n", v->device, strerror(errno));
         return -1;
     }
+	if (fseek(f, RECOVERY_FLAG_BLOCK * 512, 0)) {
+		LOGE("Failed seek %s\n(%s)\n",v->device, strerror(errno));
+		return -1;
+	}
     int count = fwrite(in, sizeof(*in), 1, f);
     if (count != 1) {
         LOGE("Failed writing %s\n(%s)\n", v->device, strerror(errno));

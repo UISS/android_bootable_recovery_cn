@@ -116,14 +116,14 @@ int install_zip(const char* packagefilepath)
 
 void show_install_update_menu()
 {
-    static char* headers[] = {  "Apply update from .zip file on SD card",
+    static char* headers[] = {  "选择sd卡上的zip刷机包来安装",
                                 "",
                                 NULL
     };
     
-    char* install_menu_items[] = {  "choose zip from sdcard",
-                                    "apply /sdcard/update.zip",
-                                    "toggle signature verification",
+    char* install_menu_items[] = {  "从sd卡上选择zip卡刷包",
+                                    "安装/sdcard/update.zip",
+                                    "切换证书认证",
                                     NULL,
                                     NULL };
 
@@ -900,7 +900,8 @@ void show_partition_menu()
         }
 
         if (!is_data_media()) {
-          options[mountable_volumes + formatable_volumes] = "mount USB storage";
+//          options[mountable_volumes + formatable_volumes] = "mount USB storage";
+          options[mountable_volumes + formatable_volumes] = "挂载USB存储";
           options[mountable_volumes + formatable_volumes + 1] = NULL;
         }
         else {
@@ -1074,28 +1075,28 @@ static void choose_default_backup_format() {
     switch (chosen_item) {
         case 0:
             write_string_to_file(NANDROID_BACKUP_FORMAT_FILE, "tar");
-            ui_print("Default backup format set to tar.\n");
+            ui_print("默认备份格式设置为tar.\n");
             break;
         case 1:
             write_string_to_file(NANDROID_BACKUP_FORMAT_FILE, "dup");
-            ui_print("Default backup format set to dedupe.\n");
+            ui_print("默认备份格式设置为dedupe.\n");
             break;
     }
 }
 
 void show_nandroid_menu()
 {
-    static char* headers[] = {  "Backup and Restore",
+    static char* headers[] = {  "备份与还原",
                                 "",
                                 NULL
     };
 
-    char* list[] = { "backup",
-                            "restore",
-                            "delete",
-                            "advanced restore",
-                            "free unused backup data",
-                            "choose default backup format",
+    char* list[] = { "备份",
+                            "还原",
+                            "删除",
+                            "高级还原",
+                            "释放不使用的备份数据",
+                            "选择默认备份格式",
                             NULL,
                             NULL,
                             NULL,
@@ -1108,17 +1109,17 @@ void show_nandroid_menu()
     char *other_sd = NULL;
     if (volume_for_path("/emmc") != NULL) {
         other_sd = "/emmc";
-        list[6] = "backup to internal sdcard";
-        list[7] = "restore from internal sdcard";
-        list[8] = "advanced restore from internal sdcard";
-        list[9] = "delete from internal sdcard";
+        list[6] = "备份至内置sd卡";
+        list[7] = "从内置sd卡上还原";
+        list[8] = "从内置sd卡上高级还原";
+        list[9] = "从内置sd卡上删除";
     }
     else if (volume_for_path("/external_sd") != NULL) {
         other_sd = "/external_sd";
-        list[6] = "backup to external sdcard";
-        list[7] = "restore from external sdcard";
-        list[8] = "advanced restore from external sdcard";
-        list[9] = "delete from external sdcard";
+        list[6] = "备份至外置sd卡";
+        list[7] = "从外置sd卡上还原";
+        list[8] = "从外置sd卡上高级还原";
+        list[9] = "从外置sd卡上删除";
     }
 #ifdef RECOVERY_EXTEND_NANDROID_MENU
     extend_nandroid_menu(list, 10, sizeof(list) / sizeof(char*));
@@ -1290,20 +1291,20 @@ int can_partition(const char* volume) {
 
 void show_advanced_menu()
 {
-    static char* headers[] = {  "Advanced Menu",
+    static char* headers[] = {  "高级菜单",
                                 "",
                                 NULL
     };
 
-    static char* list[] = { "reboot recovery",
-                            "wipe dalvik cache",
-                            "report error",
-                            "key test",
-                            "show log",
-                            "fix permissions",
-                            "partition sdcard",
-                            "partition external sdcard",
-                            "partition internal sdcard",
+    static char* list[] = { "重启Recovery",
+                            "清空dalvik缓存",
+                            "错误报告",
+                            "按键测试",
+                            "显示日志",
+                            "修复权限",
+                            "sd卡分区",
+                            "外置sd卡分区",
+                            "内置sd卡分区",
                             NULL
     };
 
@@ -1332,11 +1333,11 @@ void show_advanced_menu()
                     break;
                 ensure_path_mounted("/sd-ext");
                 ensure_path_mounted("/cache");
-                if (confirm_selection( "Confirm wipe?", "Yes - Wipe Dalvik Cache")) {
+                if (confirm_selection( "确认清除?", "是 - 清空Dalvik缓存")) {
                     __system("rm -r /data/dalvik-cache");
                     __system("rm -r /cache/dalvik-cache");
                     __system("rm -r /sd-ext/dalvik-cache");
-                    ui_print("Dalvik Cache wiped.\n");
+                    ui_print("已清除Dalvik缓存.\n");
                 }
                 ensure_path_unmounted("/data");
                 break;
@@ -1345,8 +1346,8 @@ void show_advanced_menu()
                 break;
             case 3:
             {
-                ui_print("Outputting key codes.\n");
-                ui_print("Go back to end debugging.\n");
+                ui_print("输出键值.\n");
+                ui_print("按返回以结束调试.\n");
                 int key;
                 int action;
                 do
@@ -1364,9 +1365,9 @@ void show_advanced_menu()
             case 5:
                 ensure_path_mounted("/system");
                 ensure_path_mounted("/data");
-                ui_print("Fixing permissions...\n");
+                ui_print("正在修复权限...\n");
                 __system("fix_permissions");
-                ui_print("Done!\n");
+                ui_print("完成!\n");
                 break;
             case 6:
                 partition_sdcard("/sdcard");

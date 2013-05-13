@@ -22,15 +22,27 @@
 
 char* MENU_HEADERS[] = { NULL };
 
-char* MENU_ITEMS[] = { "reboot system now",
-                       "install zip from sdcard",
-                       "install zip from sideload",
-                       "wipe data/factory reset",
-                       "wipe cache partition",
-                       "backup and restore",
-                       "mounts and storage",
-                       "advanced",
+char* MENU_ITEMS[] = { "重启系统",
+                       "从sd卡上选择zip卡刷包",
+                       "使用sideload安装zip卡刷包",
+                       "清空数据/恢复出厂",
+                       "清空缓存",
+                       "备份与还原",
+                       "挂载与存储",
+                       "高级选项",
                        NULL };
+
+
+/* char* MENU_ITEMS[] = { "reboot system now",
+ *                        "install zip from sdcard",
+ *                        "install zip from sideload",
+ *                        "wipe data/factory reset",
+ *                        "wipe cache partition",
+ *                        "backup and restore",
+ *                        "mounts and storage",
+ *                        "advanced",
+ *                        NULL };
+ */
 
 void device_ui_init(UIParameters* ui_parameters) {
 }
