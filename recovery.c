@@ -636,24 +636,24 @@ wipe_data(int confirm) {
         static char** title_headers = NULL;
 
         if (title_headers == NULL) {
-            char* headers[] = { "Confirm wipe of all user data?",
-                                "  THIS CAN NOT BE UNDONE.",
+            char* headers[] = { "确认是否清除所有数据?",
+                                "这一步操作不可挽回.",
                                 "",
                                 NULL };
             title_headers = prepend_title((const char**)headers);
         }
 
-        char* items[] = { " No",
-                          " No",
-                          " No",
-                          " No",
-                          " No",
-                          " No",
-                          " No",
-                          " Yes -- delete all user data",   // [7]
-                          " No",
-                          " No",
-                          " No",
+        char* items[] = { " 否",
+                          " 否",
+                          " 否",
+                          " 否",
+                          " 否",
+                          " 否",
+                          " 否",
+                          " 是 -- 删除所有用户数据",   // [7]
+                          " 否",
+                          " 否",
+                          " 否",
                           NULL };
 
         int chosen_item = get_menu_selection(title_headers, items, 1, 0);
@@ -710,11 +710,11 @@ prompt_and_wait() {
                 break;
 
             case ITEM_WIPE_CACHE:
-                if (confirm_selection("Confirm wipe?", "Yes - Wipe Cache"))
+                if (confirm_selection("确认清除?", "是 - 清除缓存"))
                 {
-                    ui_print("\n-- Wiping cache...\n");
+                    ui_print("\n-- 正在清除缓存...\n");
                     erase_volume("/cache");
-                    ui_print("Cache wipe complete.\n");
+                    ui_print("清除缓存完毕.\n");
                     if (!ui_text_visible()) return;
                 }
                 break;

@@ -130,11 +130,11 @@ void show_install_update_menu()
     char *other_sd = NULL;
     if (volume_for_path("/emmc") != NULL) {
         other_sd = "/emmc/";
-        install_menu_items[3] = "choose zip from internal sdcard";
+        install_menu_items[3] = "从内置sd卡上选择zip卡刷包";
     }
     else if (volume_for_path("/external_sd") != NULL) {
         other_sd = "/external_sd/";
-        install_menu_items[3] = "choose zip from external sdcard";
+        install_menu_items[3] = "从外置sd卡上选择zip卡刷包";
     }
     
     for (;;)
@@ -147,7 +147,7 @@ void show_install_update_menu()
                 break;
             case ITEM_APPLY_SDCARD:
             {
-                if (confirm_selection("Confirm install?", "Yes - Install /sdcard/update.zip"))
+                if (confirm_selection("确认安装?", "是 - 安装 /sdcard/update.zip"))
                     install_zip(SDCARD_UPDATE_FILE);
                 break;
             }
@@ -596,30 +596,30 @@ int confirm_selection(const char* title, const char* confirm)
     if (0 == stat("/sdcard/clockworkmod/.no_confirm", &info))
         return 1;
 
-    char* confirm_headers[]  = {  title, "  THIS CAN NOT BE UNDONE.", "", NULL };
+    char* confirm_headers[]  = {  title, "这一步操作无法挽回.", "", NULL };
     int one_confirm = 0 == stat("/sdcard/clockworkmod/.one_confirm", &info);
 #ifdef BOARD_TOUCH_RECOVERY
     one_confirm = 1;
 #endif 
     if (one_confirm) {
-        char* items[] = { "No",
+        char* items[] = { "否",
                         confirm, //" Yes -- wipe partition",   // [1]
                         NULL };
         int chosen_item = get_menu_selection(confirm_headers, items, 0, 0);
         return chosen_item == 1;
     }
     else {
-        char* items[] = { "No",
-                        "No",
-                        "No",
-                        "No",
-                        "No",
-                        "No",
-                        "No",
+        char* items[] = { "否",
+                        "否",
+                        "否",
+                        "否",
+                        "否",
+                        "否",
+                        "否",
                         confirm, //" Yes -- wipe partition",   // [7]
-                        "No",
-                        "No",
-                        "No",
+                        "否",
+                        "否",
+                        "否",
                         NULL };
         int chosen_item = get_menu_selection(confirm_headers, items, 0, 0);
         return chosen_item == 7;
@@ -827,7 +827,7 @@ int is_safe_to_format(char* name)
 
 void show_partition_menu()
 {
-    static char* headers[] = {  "Mounts and Storage Menu",
+    static char* headers[] = {  "挂载与存储菜单",
                                 "",
                                 NULL
     };
@@ -920,11 +920,11 @@ void show_partition_menu()
                 if (!confirm_selection("format /data and /data/media (/sdcard)", confirm))
                     continue;
                 handle_data_media_format(1);
-                ui_print("Formatting /data...\n");
+                ui_print("正在格式化/data...\n");
                 if (0 != format_volume("/data"))
-                    ui_print("Error formatting /data!\n");
+                    ui_print("格式化/data时出错!\n");
                 else
-                    ui_print("Done.\n");
+                    ui_print("完成.\n");
                 handle_data_media_format(0);  
             }
         }
@@ -935,12 +935,12 @@ void show_partition_menu()
             if (is_path_mounted(v->mount_point))
             {
                 if (0 != ensure_path_unmounted(v->mount_point))
-                    ui_print("Error unmounting %s!\n", v->mount_point);
+                    ui_print("卸载%s时出错!\n", v->mount_point);
             }
             else
             {
                 if (0 != ensure_path_mounted(v->mount_point))
-                    ui_print("Error mounting %s!\n",  v->mount_point);
+                    ui_print("卸载%s时出错!\n", v->mount_point);
             }
         }
         else if (chosen_item < (mountable_volumes + formatable_volumes))
@@ -953,11 +953,11 @@ void show_partition_menu()
 
             if (!confirm_selection(confirm_string, confirm))
                 continue;
-            ui_print("Formatting %s...\n", v->mount_point);
+            ui_print("正在格式化%s...\n", v->mount_point);
             if (0 != format_volume(v->mount_point))
-                ui_print("Error formatting %s!\n", v->mount_point);
+                ui_print("格式化%s时出错!\n", v->mount_point);
             else
-                ui_print("Done.\n");
+                ui_print("完成.\n");
         }
     }
 
