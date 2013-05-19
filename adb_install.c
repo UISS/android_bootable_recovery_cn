@@ -80,7 +80,7 @@ apply_from_adb() {
     stop_adbd();
     set_usb_driver(1);
 
-    ui_print("\n\n已启动Sideload ...\n请在电脑上使用命令: \"adb sideload <文件>\"\n向设备发送zip卡刷包\n\n");
+    ui_print("\n\n已启动Sideload ...\n请在电脑上使用:\"adb sideload <文件>\"\n向设备发送zip卡刷包\n\n");
 
     pid_t child;
     if ((child = fork()) == 0) {
